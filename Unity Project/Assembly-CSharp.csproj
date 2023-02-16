@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Assets\climb.cs" />
     <Compile Include="Assets\move.cs" />
-    <Compile Include="Assets\groundChecker.cs" />
     <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
