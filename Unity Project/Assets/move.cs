@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
+//using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class move : MonoBehaviour
@@ -49,13 +49,13 @@ public class move : MonoBehaviour
     void Update()
     {
         // Running
-        if (Input.GetKeyDown(KeyCode.LeftShift)) { multiplier *= 2.3f; intensity += 0.1f; amplitude += 0.07f; }
+        if (Input.GetKeyDown(KeyCode.LeftShift)) { multiplier *= 7f; intensity += 0.1f; amplitude += 0.07f; }
         else if (Input.GetKeyUp(KeyCode.LeftShift)) {multiplier = 0.007f; intensity -= 0.1f; amplitude -= 0.07f; }
 
         //Walking
         if (Input.GetKey(KeyCode.W)){ 
-            if(!isCrouching) this.transform.parent.Translate(Vector3.forward * multiplier); 
-            else this.transform.parent.Translate(Vector3.forward * multiplier * 0.6f);
+            if(!isCrouching) this.transform.parent.Translate(Vector3.forward * (multiplier + Time.fixedDeltaTime * 1.5f)); 
+            else this.transform.parent.Translate(Vector3.forward * (multiplier * 0.6f + Time.fixedDeltaTime * 1.5f));
             
             intensity = 0.4f;
             amplitude = 0.2f;
@@ -64,8 +64,8 @@ public class move : MonoBehaviour
         }   
         
         else if (Input.GetKey(KeyCode.S)){ 
-           if(!isCrouching) this.transform.parent.Translate(Vector3.forward * (-multiplier) * 0.4f); 
-            else this.transform.parent.Translate(Vector3.forward * (-multiplier) * 0.4f * 0.6f);
+           if(!isCrouching) this.transform.parent.Translate(Vector3.forward * ((-multiplier) * 0.4f - Time.fixedDeltaTime * 1.5f * 1.5f)); 
+            else this.transform.parent.Translate(Vector3.forward * ((-multiplier) * 0.4f * 0.6f - Time.fixedDeltaTime * 1.5f));
 
             amplitude = 0.08f;
             intensity = 0.25f;
@@ -73,8 +73,8 @@ public class move : MonoBehaviour
             isWalking = true; }
 
         if (Input.GetKey(KeyCode.D)){ 
-            if (!isCrouching) this.transform.parent.Translate(Vector3.right * (multiplier) * 0.5f);
-            else this.transform.parent.Translate(Vector3.right * (multiplier) * 0.5f * 0.6f);
+            if (!isCrouching) this.transform.parent.Translate(Vector3.right * ((multiplier) * 0.5f + Time.fixedDeltaTime * 1.5f));
+            else this.transform.parent.Translate(Vector3.right * ((multiplier) * 0.5f * 0.6f + Time.fixedDeltaTime * 1.5f));
 
             amplitude = 0.12f;
             intensity = 0.33f;
@@ -82,8 +82,8 @@ public class move : MonoBehaviour
             isWalking = true; }
 
         else if (Input.GetKey(KeyCode.A)){ 
-            if(!isCrouching) this.transform.parent.Translate(Vector3.right * (-multiplier) * 0.5f);
-            else this.transform.parent.Translate(Vector3.right * (-multiplier) * 0.5f * 0.6f);
+            if(!isCrouching) this.transform.parent.Translate(Vector3.right * ((-multiplier) * 0.5f - Time.fixedDeltaTime * 1.5f));
+            else this.transform.parent.Translate(Vector3.right * ((-multiplier) * 0.5f * 0.6f - Time.fixedDeltaTime * 1.5f));
 
             amplitude = 0.12f;
             intensity = 0.33f;
@@ -113,6 +113,8 @@ public class move : MonoBehaviour
 
         //Crouch
 
+        if(isCrouching) Debug.DrawRay(transform.position, Vector3.up * transform.localScale.y, Color.magenta); 
+
         if (Input.GetKeyDown(KeyCode.LeftControl)) {
             this.transform.parent.localScale = new Vector3(1, 0.5f, 1);
             isCrouching = true;
@@ -120,15 +122,26 @@ public class move : MonoBehaviour
 
         else if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            this.transform.parent.localScale = Vector3.one;
-            isCrouching = false;
+            
+            if (!Physics.Raycast(transform.position, Vector3.up, transform.localScale.y))
+            {
+                this.transform.parent.localScale = Vector3.one;
+                isCrouching = false;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.C)) {
-            if (isCrouching) this.transform.parent.localScale = Vector3.one;
-            else this.transform.parent.localScale = new Vector3(1, 0.5f, 1);
+            if (isCrouching && !Physics.Raycast(transform.position, Vector3.up, transform.localScale.y))
+            {
+                this.transform.parent.localScale = Vector3.one;
+                isCrouching = false;
+            }
+            else if (isCrouching && Physics.Raycast(transform.position, Vector3.up, transform.localScale.y)) { }
+            else{
+                this.transform.parent.localScale = new Vector3(1, 0.5f, 1);
 
-            isCrouching = !isCrouching;
+                isCrouching = !isCrouching;
+            }
         }
 
         if (isWalking) // Если игрок движется
