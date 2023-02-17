@@ -59,6 +59,7 @@
     <Compile Include="Assets\climb.cs" />
     <Compile Include="Assets\move.cs" />
     <Compile Include="Assets\test.cs" />
+    <Compile Include="Assets\grab.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

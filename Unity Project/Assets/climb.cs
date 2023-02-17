@@ -44,19 +44,10 @@ public class climb : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.DrawRay(this.transform.position, this.transform.forward * 0.7f, Color.magenta);
-        Debug.DrawRay(this.transform.position + new Vector3(0, 0.7f, 0), this.transform.forward * 0.7f, Color.red);
-        Debug.DrawRay(this.transform.position + new Vector3(0, 1.9f, 0), this.transform.forward * 0.8f, Color.yellow);
-        Debug.DrawRay(this.transform.position - new Vector3(0, 0.7f, 0), this.transform.forward * 0.7f, Color.cyan);
-
-
         over = Physics.Raycast(this.transform.position + new Vector3(0, 1.9f, 0), this.transform.forward, 0.8f);
         head = Physics.Raycast(this.transform.position + new Vector3(0, 0.7f, 0), this.transform.forward, 0.7f);
         body = Physics.Raycast(this.transform.position, this.transform.forward, 0.7f);
         legs = Physics.Raycast(this.transform.position - new Vector3(0, 0.7f, 0), this.transform.forward, 0.7f);
-
-
-        
     }
 
     IEnumerator climber(Vector3 pos, Vector3 dest)  
