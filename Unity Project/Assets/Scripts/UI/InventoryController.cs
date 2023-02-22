@@ -13,16 +13,18 @@ public class InventoryController : MonoBehaviour
     void Start()
     {
 
-        if (!wided)
+        if (!wided) // без валізи, поле 6х6
         {
             GameObject cell = new GameObject("testcell");
 
             RectTransform pos = cell.AddComponent<RectTransform>();
             pos.transform.SetParent(this.transform);
             pos.anchoredPosition = new Vector2(-918f, 426.65f);
-            pos.sizeDelta = new Vector2(78.01f, 78.01f);
+            pos.sizeDelta = new Vector2(78f, 78f);
 
             Image image = cell.AddComponent<Image>();
+            Texture2D tx = Resources.Load<Texture2D>("cell");
+            image.sprite = Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), new Vector2(0.5f, 0.5f));
 
             cell.transform.SetParent(this.transform);
 
@@ -44,7 +46,8 @@ public class InventoryController : MonoBehaviour
             GameObject.Destroy(cell);
         }
 
-        else if (wided) { };
+        else if (wided) // з валізою, поле 16х6
+        { };
     }
 
     // Update is called once per frame

@@ -15,7 +15,7 @@ public class move : MonoBehaviour
     private float rotX, rotY; 
     Vector3 relativecamdist; //camera distance relative to capsule
 
-    int m = 1;
+    //int m = 1;
 
 
     float intensity = 0.4f; // Скорость раскачки

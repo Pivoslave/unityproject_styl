@@ -56,13 +56,16 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\UI\generalControl.cs" />
+    <Compile Include="Assets\Scripts\UI\InventoryCell.cs" />
     <Compile Include="Assets\Scripts\climb.cs" />
     <Compile Include="Assets\Scripts\move.cs" />
     <Compile Include="Assets\Scripts\grab.cs" />
-    <Compile Include="Assets\Scripts\test.cs" />
-    <Compile Include="Assets\Scripts\UI\generalControl.cs" />
-    <Compile Include="Assets\Scripts\UI\InventoryCell.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryController.cs" />
+    <Compile Include="Assets\Scripts\test.cs" />
+    <Compile Include="Assets\Scripts\Inventory\Bread.cs" />
+    <Compile Include="Assets\Scripts\UI\ItemController.cs" />
+    <Compile Include="Assets\Scripts\Inventory\MonoItemComp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
