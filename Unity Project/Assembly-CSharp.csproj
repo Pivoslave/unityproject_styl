@@ -57,15 +57,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\UI\generalControl.cs" />
+    <Compile Include="Assets\Scripts\Inventory\MonoItemComp.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryCell.cs" />
     <Compile Include="Assets\Scripts\climb.cs" />
     <Compile Include="Assets\Scripts\move.cs" />
     <Compile Include="Assets\Scripts\grab.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryController.cs" />
-    <Compile Include="Assets\Scripts\test.cs" />
+    <Compile Include="Assets\Scripts\Inventory\LogicArrayInv.cs" />
     <Compile Include="Assets\Scripts\Inventory\Bread.cs" />
+    <Compile Include="Assets\Scripts\test.cs" />
     <Compile Include="Assets\Scripts\UI\ItemController.cs" />
-    <Compile Include="Assets\Scripts\Inventory\MonoItemComp.cs" />
+    <Compile Include="Assets\Scripts\Inventory\ItemDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

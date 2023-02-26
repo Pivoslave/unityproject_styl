@@ -9,12 +9,18 @@ public class grab : MonoBehaviour
     GameObject toCarry;
     bool carried;
     GameObject items;
+    GameObject inventory;
 
+    //ItemDescriptor descriptor;
+    //RectTransform CellToPut;
 
     void Start()
     {
         items = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
+        inventory = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
 
+
+        //descriptor = items.GetComponent<ItemDescriptor>();
 
         carried = false;
         toCarry = null;
@@ -39,14 +45,25 @@ public class grab : MonoBehaviour
 
                     else if(rH.collider.gameObject.tag == "Collectable") // Якщо зачеплений предмет можна покласти у інвентар
                     {
+                        RectTransform CellToPut = null;
+                        ItemDescriptor descriptor = items.GetComponent<ItemDescriptor>();
                         GameObject item = new GameObject("tbr");
                         item.transform.parent = items.transform;
+
+
                         
+                        if (rH.collider.name.Contains("Bread")){
+                            CellToPut = inventory.GetComponent<LogicArrayInv>().FindFirst(descriptor.bread.x, descriptor.bread.y);
+                            item = CreateItemSprite(item, descriptor.bread.x, descriptor.bread.y, descriptor.bread.imagepath, descriptor.bread.itemname);
 
-                        if (rH.collider.name.Contains("Bread")) { item = CreateItemSprite(item, 1, 1, "Sprites/bread", "bread"); };
+                        };
 
 
-                        GameObject.Destroy(rH.collider.gameObject);
+                        if(CellToPut != null) {
+                            GameObject.Destroy(rH.collider.gameObject);
+                            item.GetComponent<RectTransform>().position = CellToPut.position + new Vector3(CellToPut.sizeDelta.x /2, -CellToPut.sizeDelta.y/2);
+                        }
+
                         items.GetComponent<ItemController>().Add(item);
                     }
                 };

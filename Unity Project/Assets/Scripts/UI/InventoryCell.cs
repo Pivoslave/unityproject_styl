@@ -13,4 +13,6 @@ public class InventoryCell : MonoBehaviour
         this.posy = y;
         isOccupied = false;
     }
+
+    public bool getStatus() { return isOccupied; }
 }
