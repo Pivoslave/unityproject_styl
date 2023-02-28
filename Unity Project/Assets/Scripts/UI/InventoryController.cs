@@ -1,62 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
-    [SerializeField] bool wided = false;
+    [SerializeField] bool wided;
 
+    GameObject setting_table;
+    GameObject canvas;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        if (!wided) // без валізи, поле 6х6
-        {
-            GameObject cell = new GameObject("testcell");
-
-            RectTransform pos = cell.AddComponent<RectTransform>();
-            pos.transform.SetParent(this.transform);
-            pos.anchoredPosition = new Vector2(-913.4f, 426.65f);
-            pos.sizeDelta = new Vector2(78f, 78f);
-
-            Image image = cell.AddComponent<Image>();
-            Texture2D tx = Resources.Load<Texture2D>("cell");
-            image.sprite = Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), new Vector2(0.5f, 0.5f));
-
-            cell.transform.SetParent(this.transform);
-
-
-
-            for (int j = 0; j < 6; j++)
-            {
-                for (int i = 0; i < 6; i++)
-                {
-                    GameObject cell2 = GameObject.Instantiate(cell, this.transform);
-                    cell2.gameObject.name = "image_" + i.ToString() + "_" + j.ToString();
-                    cell2.GetComponent<RectTransform>().anchoredPosition =cell.GetComponent<RectTransform>().anchoredPosition + new Vector2(cell.GetComponent<RectTransform>().sizeDelta.x * i, cell.GetComponent<RectTransform>().sizeDelta.y * -j);
-                    InventoryCell incell = cell2.AddComponent<InventoryCell>();
-                    incell.setxy(i, j);
-                }
-
-            }
-
-            GameObject.Destroy(cell);
-        }
-
-        else if (wided) // з валізою, поле 16х6
-        { };
-
-        this.GetComponent<LogicArrayInv>().FormArray();
-
-        this.GetComponent<LogicArrayInv>().FindFirst(1, 1);
+        
+        wided = false;
+        DrawCells();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void DrawCells()
+    {
+
+        int hor, vert;
+
+        vert = 6;
+        hor = wided == true ? 16 : 6;
+
+        setting_table = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
+        canvas = GameObject.Find("Canvas");
+
+        float width = canvas.GetComponent<RectTransform>().sizeDelta.x;
+        float height = canvas.GetComponent<RectTransform>().sizeDelta.y;
+
+        float size = Mathf.Abs((width + setting_table.GetComponent<RectTransform>().offsetMax.x - 9) / 16);
+
+        GameObject cell = new GameObject("testcell");
+
+        RectTransform pos = cell.AddComponent<RectTransform>();
+        pos.transform.SetParent(this.transform);
+
+        pos.pivot = new Vector2(0, 1);
+        pos.anchorMax = new Vector2(1, 1);
+        pos.anchorMin = new Vector2(0, 0);
+
+        pos.offsetMin = new Vector2(9, height - 10 - size);
+        pos.offsetMax = new Vector2(-(width - (9 + size)), -10);
+
+        cell.transform.localScale = Vector3.one;
+
+        Image image = cell.AddComponent<Image>();
+        Texture2D tx = Resources.Load<Texture2D>("cell");
+        image.sprite = Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), new Vector2(0, 1));
+
+        cell.transform.SetParent(this.transform);
+
+        for (int j = 0; j < vert; j++)
+        {
+            for (int i = 0; i < hor; i++)
+            {
+                GameObject cell2 = GameObject.Instantiate(cell, this.transform);
+
+                cell2.gameObject.name = "image_" + i.ToString() + "_" + j.ToString();
+
+                cell2.GetComponent<RectTransform>().offsetMin = cell.GetComponent<RectTransform>().offsetMin + new Vector2(size * i, -size * j);
+                cell2.GetComponent<RectTransform>().offsetMax = cell.GetComponent<RectTransform>().offsetMax + new Vector2(size * i, -size * j);
+
+                InventoryCell incell = cell2.AddComponent<InventoryCell>();
+                incell.setxy(i, j);
+            }
+        }
+
+        GameObject.Destroy(cell);
+
+        this.GetComponent<LogicArrayInv>().FormArray();
     }
 }

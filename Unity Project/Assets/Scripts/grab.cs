@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -13,6 +14,8 @@ public class grab : MonoBehaviour
 
     //ItemDescriptor descriptor;
     //RectTransform CellToPut;
+
+    
 
     void Start()
     {
@@ -45,24 +48,47 @@ public class grab : MonoBehaviour
 
                     else if(rH.collider.gameObject.tag == "Collectable") // Якщо зачеплений предмет можна покласти у інвентар
                     {
-                        RectTransform CellToPut = null;
-                        ItemDescriptor descriptor = items.GetComponent<ItemDescriptor>();
+                        rect_rot cell_rotation = new rect_rot(null, false);
+                        inventoryItem item_descriptor = new inventoryItem("", "", 0, 0);
                         GameObject item = new GameObject("tbr");
                         item.transform.parent = items.transform;
 
 
                         
-                        if (rH.collider.name.Contains("Bread")){
-                            CellToPut = inventory.GetComponent<LogicArrayInv>().FindFirst(descriptor.bread.x, descriptor.bread.y);
-                            item = CreateItemSprite(item, descriptor.bread.x, descriptor.bread.y, descriptor.bread.imagepath, descriptor.bread.itemname);
+                        if (rH.collider.name.Contains("Bread")){ item_descriptor = items.GetComponent<ItemDescriptor>().bread; };
 
-                        };
+                        
+                        
+                        cell_rotation = inventory.GetComponent<LogicArrayInv>().FindFirst(item_descriptor.x, item_descriptor.y);
 
 
-                        if(CellToPut != null) {
+                        // ДОПИСАТЬ
+                        if (cell_rotation.rect != null)
+                        {
                             GameObject.Destroy(rH.collider.gameObject);
-                            item.GetComponent<RectTransform>().position = CellToPut.position + new Vector3(CellToPut.sizeDelta.x /2, -CellToPut.sizeDelta.y/2);
+
+                            Vector3 cell_left_upper = cell_rotation.rect.position - new Vector3(cell_rotation.rect.position.x / 2, -cell_rotation.rect.position.y / 2);
+                            Vector3 center_offset = Vector3.zero;
+
+                            item = CreateItemSprite(item, item_descriptor.x, item_descriptor.y, item_descriptor.imagepath, item_descriptor.itemname);
+
+                            if (!cell_rotation.is_rotated)
+                                center_offset = new Vector3(item.GetComponent<RectTransform>().sizeDelta.x/2, -item.GetComponent<RectTransform>().sizeDelta.y/2);
+
+                            else if (cell_rotation.is_rotated)
+                                center_offset = new Vector3(item.GetComponent<RectTransform>().sizeDelta.y/2, -item.GetComponent<RectTransform>().sizeDelta.x/2);
+
+                            item.GetComponent<RectTransform>().position = cell_left_upper - center_offset;
+                            if (cell_rotation.is_rotated) item.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 90);
+
+                            inventory.GetComponent<LogicArrayInv>().ChangeCellStatus(true, cell_rotation.rect.position.x, cell_rotation.rect.position.y, item_descriptor.x, item_descriptor.y);
                         }
+
+                        else if (cell_rotation.rect == null) { };
+
+
+                     //   cell_rotation = inventory.GetComponent<LogicArrayInv>().FindFirst(descriptor.bread.x, descriptor.bread.y);
+                     //   item = CreateItemSprite(item, descriptor.bread.x, descriptor.bread.y, descriptor.bread.imagepath, descriptor.bread.itemname);
 
                         items.GetComponent<ItemController>().Add(item);
                     }

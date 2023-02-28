@@ -8,7 +8,7 @@ public class InventoryCell : MonoBehaviour
     [SerializeField] public int posy;
     [SerializeField] bool isOccupied;
 
-    public void setxy(int x, int y) {
+    public void setxy(int x, int y) { // викликається при ініціалізації комірок інвентаря програмно
         this.posx = x;
         this.posy = y;
         isOccupied = false;
