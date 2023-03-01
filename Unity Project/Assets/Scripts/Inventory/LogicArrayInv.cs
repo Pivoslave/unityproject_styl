@@ -10,6 +10,8 @@ public struct rect_rot
     public RectTransform rect;
     public bool is_rotated;
 
+    
+
     public rect_rot(RectTransform rt, bool ir)
     {
         rect = rt;
@@ -148,13 +150,26 @@ public class LogicArrayInv : MonoBehaviour
         }
     }
 
-    public void ChangeCellStatus(bool occupying, float posx, float posy, int x, int y)
+    public void ChangeCellStatus(bool occupying, int x_pos, int y_pos, int x, int y, bool rotated)
     {
-        for (int i = 0; i <= x; i++)
+        int x1 = rotated == false ? x : y;
+        int y1 = rotated == false ? y : x;
+
+        for (int i = 0; i <= x1; i++)
         {
-            for (int j = 0; j <= y; j++)
+            for (int j = 0; j <= y1; j++)
             {
-                Debug.Log((posx + i) + ", " + (posy + j));
+                Debug.Log((x_pos + i) + ", " + (y_pos + j));
+
+                foreach(Transform cell in this.transform) if(cell.GetComponent<InventoryCell>() != null)
+                    {
+                        if(cell.GetComponent<InventoryCell>().posx == x_pos + i && cell.GetComponent<InventoryCell>().posy == y_pos + j)
+                        {
+                            cell.GetComponent<InventoryCell>().changeStatus(occupying);
+                            occup[x_pos + i, y_pos + j] = occupying;
+                            break;
+                        }
+                    }
             }
         }
     }

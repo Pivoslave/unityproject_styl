@@ -21,16 +21,19 @@ public struct inventoryItem
 
 public class ItemDescriptor : MonoBehaviour
 {
-    public inventoryItem bread = new inventoryItem("bread", "Sprites/bread", 1, 1);
 
     public inventoryItem StructByGameObject(GameObject a)
     {
-        if (a.name.Contains("Bread")) return bread;
-
         switch (a.gameObject.name)
         {
-            case string name when name.Contains("Bread"): return bread;
-            
+            case string name when name.Contains("Bread"): return new inventoryItem("bread", "Sprites/bread", 1, 0);
+            case string name when name.Contains("BigCheese"): return new inventoryItem("big_cheese", "Sprites/big_cheese", 1, 1);
+            case string name when name.Contains("Cheese"): return new inventoryItem("cheese", "Sprites/cheese", 0, 0);
+
+
+
+
+
             default: return new inventoryItem("", "", -1, -1);
         }
     }

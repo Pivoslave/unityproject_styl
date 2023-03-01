@@ -355,7 +355,6 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/climb.cs"
 "Assets/Scripts/grab.cs"
-"Assets/Scripts/Inventory/Bread.cs"
 "Assets/Scripts/Inventory/ItemDescriptor.cs"
 "Assets/Scripts/Inventory/LogicArrayInv.cs"
 "Assets/Scripts/Inventory/MonoItemComp.cs"

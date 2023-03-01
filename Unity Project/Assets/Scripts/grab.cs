@@ -68,25 +68,16 @@ public class grab : MonoBehaviour
 
                             CreateItemSprite(item, cell_rotation, item_descriptor);
 
-                            //CreateItemSprite(item, item_descriptor.x, item_descriptor.y, item_descriptor.imagepath, item_descriptor.itemname);
+                            
 
-                            //if (!cell_rotation.is_rotated)
-                              //  center_offset = new Vector3(item.GetComponent<RectTransform>().sizeDelta.x/2, -item.GetComponent<RectTransform>().sizeDelta.y/2);
-
-                            //else if (cell_rotation.is_rotated)
-                              //  center_offset = new Vector3(item.GetComponent<RectTransform>().sizeDelta.y/2, -item.GetComponent<RectTransform>().sizeDelta.x/2);
-
-                            //item.GetComponent<RectTransform>().position = cell_left_upper - center_offset;
-                            //if (cell_rotation.is_rotated) item.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 90);
-
-                            inventory.GetComponent<LogicArrayInv>().ChangeCellStatus(true, cell_rotation.rect.position.x, cell_rotation.rect.position.y, item_descriptor.x, item_descriptor.y);
+                            inventory.GetComponent<LogicArrayInv>().ChangeCellStatus(true, cell_rotation.rect.gameObject.GetComponent<InventoryCell>().posx, cell_rotation.rect.gameObject.GetComponent<InventoryCell>().posy, item_descriptor.x, item_descriptor.y, cell_rotation.is_rotated);
                         }
 
-                        else if (cell_rotation.rect == null) { };
+                        else if (cell_rotation.rect == null || item_descriptor.x == -1) { GameObject.Destroy(item); };
 
 
-                     //   cell_rotation = inventory.GetComponent<LogicArrayInv>().FindFirst(descriptor.bread.x, descriptor.bread.y);
-                     //   item = CreateItemSprite(item, descriptor.bread.x, descriptor.bread.y, descriptor.bread.imagepath, descriptor.bread.itemname);
+                     
+                     
 
                         items.GetComponent<ItemController>().Add(item);
                     }
@@ -172,6 +163,8 @@ public class grab : MonoBehaviour
 
         if (!r_r.is_rotated) rect.pivot = new Vector2(0, 1);
         else rect.pivot = Vector2.zero;
+
+        if (r_r.is_rotated) rect.transform.Rotate(0, 0, -90);
 
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;

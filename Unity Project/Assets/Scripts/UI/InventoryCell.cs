@@ -15,4 +15,10 @@ public class InventoryCell : MonoBehaviour
     }
 
     public bool getStatus() { return isOccupied; }
+
+    /// <summary>
+    /// змінює статус комірки
+    /// </summary>
+    /// <param name="occupied"> <b><i>true</i></b> клітина займається, <b><i>false</i></b> - звільняється - </param>
+    public void changeStatus(bool occupied) { if (occupied) isOccupied = true; else isOccupied = false; } 
 }

@@ -64,7 +64,6 @@
     <Compile Include="Assets\Scripts\grab.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryController.cs" />
     <Compile Include="Assets\Scripts\Inventory\LogicArrayInv.cs" />
-    <Compile Include="Assets\Scripts\Inventory\Bread.cs" />
     <Compile Include="Assets\Scripts\test.cs" />
     <Compile Include="Assets\Scripts\UI\ItemController.cs" />
     <Compile Include="Assets\Scripts\Inventory\ItemDescriptor.cs" />
