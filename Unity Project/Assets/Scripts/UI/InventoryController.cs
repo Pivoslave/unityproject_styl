@@ -5,6 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Цей клас містить функції та змінні, що відповідають за промальовку комірок інвентаря.
+/// </summary>
+
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] bool wided;
@@ -15,7 +19,7 @@ public class InventoryController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         wided = false;
         DrawCells();
     }
@@ -23,7 +27,7 @@ public class InventoryController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void DrawCells()
@@ -81,5 +85,21 @@ public class InventoryController : MonoBehaviour
         GameObject.Destroy(cell);
 
         this.GetComponent<LogicArrayInv>().FormArray();
+    }
+
+    public float GetCellSize()
+    {
+        float width = canvas.GetComponent<RectTransform>().sizeDelta.x;
+        return Mathf.Abs((width + setting_table.GetComponent<RectTransform>().offsetMax.x - 9) / 16);
+    }
+
+    public float GetWidth()
+    {
+        return canvas.GetComponent<RectTransform>().sizeDelta.x;
+    }
+
+    public float GetHeight()
+    {
+        return canvas.GetComponent<RectTransform>().sizeDelta.y;
     }
 }
