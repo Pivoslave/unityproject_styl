@@ -4,7 +4,7 @@ using System.Runtime.ExceptionServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
+
 
 public class grab : MonoBehaviour
 {
@@ -199,5 +199,7 @@ public class grab : MonoBehaviour
         Texture2D tx = Resources.Load<Texture2D>(descriptor.imagepath); // директорія всередині "Ресурсів", що містить потрібну текстуру
         Image image = @object.AddComponent<Image>();
         image.sprite = Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), new Vector2(0.5f, 0.5f));
+
+        image.enabled = false;
     }
 }

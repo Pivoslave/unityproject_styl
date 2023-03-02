@@ -309,9 +309,17 @@
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.VisualScripting.Flow.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.VisualScripting.State.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/UnityEngine.UI.ref.dll"
-"Assets/climb.cs"
-"Assets/move.cs"
-"Assets/test.cs"
+"Assets/Scripts/climb.cs"
+"Assets/Scripts/grab.cs"
+"Assets/Scripts/Inventory/ItemDescriptor.cs"
+"Assets/Scripts/Inventory/LogicArrayInv.cs"
+"Assets/Scripts/Inventory/MonoItemComp.cs"
+"Assets/Scripts/move.cs"
+"Assets/Scripts/test.cs"
+"Assets/Scripts/UI/generalControl.cs"
+"Assets/Scripts/UI/InventoryCell.cs"
+"Assets/Scripts/UI/InventoryController.cs"
+"Assets/Scripts/UI/ItemController.cs"
 -langversion:9.0
 
 /deterministic

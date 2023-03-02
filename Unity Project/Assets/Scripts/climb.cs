@@ -19,25 +19,30 @@ public class climb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Time.timeScale != 0)
+        {
 
-            if (!over && head && body && legs)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                Physics.Raycast(this.transform.position, this.transform.forward, out RaycastHit rh, 0.7f);
-                Physics.Raycast(new Vector3(rh.point.x, this.transform.position.y + 1.8f, rh.point.z), Vector3.up * -1, out RaycastHit rh2);
+
+                if (!over && head && body && legs)
+                {
+                    Physics.Raycast(this.transform.position, this.transform.forward, out RaycastHit rh, 0.7f);
+                    Physics.Raycast(new Vector3(rh.point.x, this.transform.position.y + 1.8f, rh.point.z), Vector3.up * -1, out RaycastHit rh2);
 
 
-                Debug.Log("Initial raycast hitpos: " + rh.point + "\nCliff to climb: " + rh2.point);
+                    Debug.Log("Initial raycast hitpos: " + rh.point + "\nCliff to climb: " + rh2.point);
 
 
-                StartCoroutine(climber(this.transform.parent.position, rh2.point + new Vector3(0, this.transform.parent.transform.localScale.y, 0)));
+                    StartCoroutine(climber(this.transform.parent.position, rh2.point + new Vector3(0, this.transform.parent.transform.localScale.y, 0)));
 
-                //this.transform.parent.position = rh2.point + new Vector3(0, this.transform.parent.transform.localScale.y, 0);
-            }
-            else if (canJump)
-            {
-                this.transform.parent.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
-                StartCoroutine(jumper());
+                    //this.transform.parent.position = rh2.point + new Vector3(0, this.transform.parent.transform.localScale.y, 0);
+                }
+                else if (canJump)
+                {
+                    this.transform.parent.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+                    StartCoroutine(jumper());
+                }
             }
         }
     }
@@ -56,7 +61,7 @@ public class climb : MonoBehaviour
 
         for(int i = 1; i<= 40; i++)
         {
-            this.transform.parent.position = Vector3.Lerp(pos, dest, 0.025f * i);
+            this.transform.parent.position = Vector3.Lerp(pos, dest + this.transform.forward * 0.1f + Vector3.up * 0.2f, 0.025f * i);
             yield return new WaitForSeconds(0.02f);
         }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+
 
 public struct inventoryItem
 {
@@ -29,9 +29,10 @@ public class ItemDescriptor : MonoBehaviour
             case string name when name.Contains("Bread"): return new inventoryItem("bread", "Sprites/bread", 1, 0);
             case string name when name.Contains("BigCheese"): return new inventoryItem("big_cheese", "Sprites/big_cheese", 1, 1);
             case string name when name.Contains("Cheese"): return new inventoryItem("cheese", "Sprites/cheese", 0, 0);
-
-
-
+            case string name when name.Contains("AshPoker"): return new inventoryItem("ash_poker", "Sprites/ash_poker", 5, 0);
+            case string name when name.Contains("PipeWrench"): return new inventoryItem("pipe_wrench", "Sprites/pipe_wrench", 0, 2);
+            case string name when name.Contains("Opium"): return new inventoryItem("opium", "Sprites/opium", 0, 0);
+            case string name when name.Contains("Whisky"): return new inventoryItem("whisky", "Sprites/whisky", 0, 1);
 
 
             default: return new inventoryItem("", "", -1, -1);

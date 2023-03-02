@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class generalControl : MonoBehaviour
 {
-    bool MenuOpen;
+    bool MenuOpen = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        MenuOpen = false;
+ 
     }
 
     // Update is called once per frame
@@ -17,21 +19,16 @@ public class generalControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!MenuOpen)
-            {
-                MenuOpen = true;
-                foreach (Transform x in this.transform) if (x.gameObject.name == "Inventory") x.gameObject.SetActive(true);
-            }
+            MenuOpen = !MenuOpen;
 
-            else if (MenuOpen)
-            {
-                MenuOpen = false;
-                foreach (Transform x in this.transform) if (x.gameObject.name == "Inventory") x.gameObject.SetActive(false);
-            }
+            foreach (Transform cell in this.transform.Find("Inventory2")) cell.GetComponent<Image>().enabled = MenuOpen;
+            this.transform.Find("Inventory2").GetComponent<Image>().enabled = MenuOpen;
+            this.transform.Find("InventoryDelimiter").GetComponent<Image>().enabled = MenuOpen;
+
+            
         }
 
-
-        if (MenuOpen) Time.timeScale = 0; else Time.timeScale = 1;
+        Time.timeScale = MenuOpen ? 0 : 1;
     }
 
     

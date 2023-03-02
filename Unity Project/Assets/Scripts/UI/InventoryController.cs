@@ -64,6 +64,8 @@ public class InventoryController : MonoBehaviour
         Texture2D tx = Resources.Load<Texture2D>("cell");
         image.sprite = Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), new Vector2(0, 1));
 
+        image.enabled = false;
+
         cell.transform.SetParent(this.transform);
 
         for (int j = 0; j < vert; j++)
