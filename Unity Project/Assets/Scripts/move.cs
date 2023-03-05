@@ -76,8 +76,8 @@ public class move : MonoBehaviour
 
             else if (Input.GetKey(KeyCode.S))
             {
-                if (!isCrouching) this.transform.parent.Translate(Vector3.forward * ((-multiplier) * 0.4f - Time.fixedDeltaTime * 1.5f * 1.5f));
-                else this.transform.parent.Translate(Vector3.forward * ((-multiplier) * 0.4f * 0.6f - Time.fixedDeltaTime * 1.5f));
+                if (!isCrouching) this.transform.parent.Translate(Vector3.forward * ((-multiplier) * 0.4f - Time.fixedDeltaTime * 0.8f));
+                else this.transform.parent.Translate(Vector3.forward * ((-multiplier) *0.3f - Time.fixedDeltaTime * 0.3f));
 
                 amplitude = 0.08f;
                 intensity = 0.25f;

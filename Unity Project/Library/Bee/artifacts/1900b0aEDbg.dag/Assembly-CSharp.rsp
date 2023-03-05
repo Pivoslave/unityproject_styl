@@ -118,6 +118,7 @@
 -define:ENABLE_TILEMAP
 -define:ENABLE_TIMELINE
 -define:ENABLE_LEGACY_INPUT_MANAGER
+-define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
 -r:"D:/UnityEditor/2021.3.15f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
@@ -330,6 +331,8 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.Performance.Profile-Analyzer.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.PlasticSCM.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.Postprocessing.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.Postprocessing.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.Rider.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.Services.Core.Analytics.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/Unity.Services.Core.Environments.ref.dll"
@@ -357,13 +360,16 @@
 "Assets/Scripts/grab.cs"
 "Assets/Scripts/Inventory/ItemDescriptor.cs"
 "Assets/Scripts/Inventory/LogicArrayInv.cs"
-"Assets/Scripts/Inventory/MonoItemComp.cs"
 "Assets/Scripts/move.cs"
 "Assets/Scripts/test.cs"
+"Assets/Scripts/UI/Cell_to_Drag.cs"
+"Assets/Scripts/UI/Drag_Controller.cs"
 "Assets/Scripts/UI/generalControl.cs"
+"Assets/Scripts/UI/Icon_Drag.cs"
 "Assets/Scripts/UI/InventoryCell.cs"
 "Assets/Scripts/UI/InventoryController.cs"
 "Assets/Scripts/UI/ItemController.cs"
+"Assets/Scripts/Visual/Highlight_Collectable.cs"
 -langversion:9.0
 
 /deterministic

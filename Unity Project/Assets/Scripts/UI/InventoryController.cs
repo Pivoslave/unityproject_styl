@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
-    [SerializeField] bool wided;
+    [SerializeField] bool wided = false;
 
     GameObject setting_table;
     GameObject canvas;
@@ -19,8 +19,7 @@ public class InventoryController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        wided = false;
+        //wided = true;
         DrawCells();
     }
 
@@ -38,8 +37,8 @@ public class InventoryController : MonoBehaviour
         vert = 6;
         hor = wided == true ? 16 : 6;
 
-        setting_table = GameObject.Find("Canvas").transform.GetChild(2).gameObject;
-        canvas = GameObject.Find("Canvas");
+        setting_table = this.transform.Find("setting_table").gameObject;
+        canvas = this.gameObject;
 
         float width = canvas.GetComponent<RectTransform>().sizeDelta.x;
         float height = canvas.GetComponent<RectTransform>().sizeDelta.y;
@@ -81,13 +80,17 @@ public class InventoryController : MonoBehaviour
 
                 InventoryCell incell = cell2.AddComponent<InventoryCell>();
                 incell.setxy(i, j);
+                cell2.AddComponent<Cell_to_Drag>();
+                cell2.AddComponent<GraphicRaycaster>().enabled = false;
             }
         }
 
         GameObject.Destroy(cell);
 
         this.GetComponent<LogicArrayInv>().FormArray();
+        
     }
+
 
     public float GetCellSize()
     {

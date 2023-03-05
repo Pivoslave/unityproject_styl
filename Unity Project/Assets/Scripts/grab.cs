@@ -20,8 +20,8 @@ public class grab : MonoBehaviour
 
     void Start()
     {
-        items = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
-        inventory = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
+        items = GameObject.Find("Items").gameObject;
+        inventory = GameObject.Find("Inventory_Cells").gameObject;
 
 
         //descriptor = items.GetComponent<ItemDescriptor>();
@@ -63,23 +63,12 @@ public class grab : MonoBehaviour
                         {
                             GameObject.Destroy(rH.collider.gameObject);
 
-                            Vector3 cell_left_upper = cell_rotation.rect.position - new Vector3(cell_rotation.rect.position.x / 2, -cell_rotation.rect.position.y / 2);
-                            Vector3 center_offset = Vector3.zero;
-
                             CreateItemSprite(item, cell_rotation, item_descriptor);
-
-                            
 
                             inventory.GetComponent<LogicArrayInv>().ChangeCellStatus(true, cell_rotation.rect.gameObject.GetComponent<InventoryCell>().posx, cell_rotation.rect.gameObject.GetComponent<InventoryCell>().posy, item_descriptor.x, item_descriptor.y, cell_rotation.is_rotated);
                         }
 
                         else if (cell_rotation.rect == null || item_descriptor.x == -1) { GameObject.Destroy(item); };
-
-
-                     
-                     
-
-                        items.GetComponent<ItemController>().Add(item);
                     }
                 };
             }
@@ -129,15 +118,15 @@ public class grab : MonoBehaviour
     void CreateItemSprite(GameObject @object, int x, int y, string TextureResourcePath, string nam) 
     {
         @object.transform.parent = items.transform;
-        @object.AddComponent<MonoItemComp>().setComponent(x, y);
+        //@object.AddComponent<MonoItemComp>().setComponent(x, y);
         RectTransform rect = @object.AddComponent<RectTransform>();
         rect.position = new Vector2(0, 0);
         rect.transform.SetParent(items.transform);
 
-        float xsize = 1 + @object.GetComponent<MonoItemComp>().getX();
-        float ysize = 1 + @object.GetComponent<MonoItemComp>().getY();
+        //float xsize = 1 + @object.GetComponent<MonoItemComp>().getX();
+        //float ysize = 1 + @object.GetComponent<MonoItemComp>().getY();
 
-        rect.sizeDelta = new Vector2(78 * xsize, 78* ysize);
+        //rect.sizeDelta = new Vector2(78 * xsize, 78* ysize);
 
         Texture2D tx = Resources.Load<Texture2D>(TextureResourcePath); // директорія всередині "Ресурсів", що містить потрібну текстуру
         Image image = @object.AddComponent<Image>();
@@ -158,7 +147,10 @@ public class grab : MonoBehaviour
 
         @object.name = descriptor.itemname;
 
-        @object.AddComponent<MonoItemComp>().setComponent(descriptor.x, descriptor.y);
+        
+        
+
+        //@object.AddComponent<MonoItemComp>().setComponent(descriptor.x, descriptor.y);
         RectTransform rect = @object.AddComponent<RectTransform>();
 
         if (!r_r.is_rotated) rect.pivot = new Vector2(0, 1);
@@ -170,7 +162,7 @@ public class grab : MonoBehaviour
         rect.anchorMax = Vector2.one;
 
         RectTransform firstcell = r_r.rect;
-        RectTransform lastcell = null;
+        GameObject lastcell = null;
 
         @object.transform.localScale = Vector3.one;
 
@@ -180,7 +172,7 @@ public class grab : MonoBehaviour
                 cell.GetComponent<InventoryCell>().posx == firstcell.gameObject.GetComponent<InventoryCell>().posx + descriptor.x &&
                 cell.GetComponent<InventoryCell>().posy == firstcell.gameObject.GetComponent<InventoryCell>().posy + descriptor.y)
             {
-                lastcell = cell.GetComponent<RectTransform>();
+                lastcell = cell.gameObject;
                 break;
             }
         }
@@ -200,6 +192,20 @@ public class grab : MonoBehaviour
         Image image = @object.AddComponent<Image>();
         image.sprite = Sprite.Create(tx, new Rect(0, 0, tx.width, tx.height), new Vector2(0.5f, 0.5f));
 
+        @object.AddComponent<GraphicRaycaster>();
+
         image.enabled = false;
+
+        int x_offset = !r_r.is_rotated ? descriptor.x : descriptor.y;
+        int y_offset = !r_r.is_rotated ? descriptor.y : descriptor.x;
+        int x_base = r_r.rect.gameObject.GetComponent<InventoryCell>().posx;
+        int y_base = r_r.rect.gameObject.GetComponent<InventoryCell>().posy;
+
+        @object.transform.parent = items.transform;
+
+        @object.AddComponent<Icon_Drag>();
+
+        items.GetComponent<ItemController>().Add(new item_location(@object, x_base, y_base, x_base + x_offset, y_base + y_offset));
+
     }
 }

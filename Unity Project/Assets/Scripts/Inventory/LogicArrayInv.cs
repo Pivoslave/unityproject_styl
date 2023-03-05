@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // інтегрувати як вивід ф-ції FindFirst для випадків, коли предмет повернуто на 90 градусів
@@ -21,11 +24,9 @@ public struct rect_rot
 
 public class LogicArrayInv : MonoBehaviour
 {
-
-    
-    
-
     bool[,] occup;
+
+    public bool[] check;
 
     public int xsize = 0; 
     public int ysize = 0;
@@ -104,7 +105,7 @@ public class LogicArrayInv : MonoBehaviour
                                 InventoryCell incell = cell.GetComponent<InventoryCell>();
                                 if(incell.posx == i && incell.posy == j) // знаходится комірка з координатами зі співпадінням у зовнішніх циклах
                                 {
-                                    Debug.Log(cell.name);
+                                    //Debug.Log(cell.name);
                                     return cell.gameObject.GetComponent<RectTransform>(); // і повертається її Transform 
                                 }
                             }
@@ -173,4 +174,108 @@ public class LogicArrayInv : MonoBehaviour
             }
         }
     }
+
+    public void RefillArray()
+    {
+        
+    }
+
+    /// <summary>
+    /// функція перевірки масиву комірок по комірці, на яку наведено курсор
+    /// </summary>
+    /// <param name="item_sprite"> предмет, що переноситься </param>
+    /// <param name="cell"> комірка на яку наведено </param>
+    /// <returns></returns>
+    public bool CheckCellsByOne(GameObject item_sprite, GameObject cell)
+    {
+        bool cells_available = true;
+
+        string debug = "";
+
+        inventoryItem item_dimensions = GameObject.Find("Items").GetComponent<ItemDescriptor>().StructByName(item_sprite.name);
+
+        check = new bool[(item_dimensions.x + 1) * (item_dimensions.y + 1)];
+        
+
+        int x = item_sprite.GetComponent<RectTransform>().pivot == Vector2.zero ? item_dimensions.y : item_dimensions.x;
+        int y = item_sprite.GetComponent<RectTransform>().pivot == Vector2.zero ? item_dimensions.x : item_dimensions.y;
+
+        int i = 0;
+
+        foreach (Transform cell1 in GameObject.Find("Inventory_Cells").transform)
+        {
+            if (cell1.GetComponent<InventoryCell>() == null) continue;
+
+            else if (cell.GetComponent<InventoryCell>().posx + x > xsize ||
+                cell.GetComponent<InventoryCell>().posy + y > ysize) { Debug.Log("false"); return false; }
+
+            else if (cell1.GetComponent<InventoryCell>().posx < cell.GetComponent<InventoryCell>().posx ||
+                cell1.GetComponent<InventoryCell>().posx > cell.GetComponent<InventoryCell>().posx + x) continue;
+
+            else if (cell1.GetComponent<InventoryCell>().posy < cell.GetComponent<InventoryCell>().posy ||
+                cell1.GetComponent<InventoryCell>().posy > cell.GetComponent<InventoryCell>().posy + y) continue;
+
+            else if (cell1.GetComponent<InventoryCell>().getStatus() == true) return false;
+        }
+
+        Debug.Log(debug);
+
+        
+
+        return true;
+
+        //if (cell1.GetComponent<InventoryCell>() == null) continue;
+        //else if (cell1.GetComponent<InventoryCell>().posx + x >= xsize ||
+        //    cell1.GetComponent<InventoryCell>().posy + y >= ysize) continue;
+
+        //else if (!(cell1.GetComponent<InventoryCell>().posx >= cell.GetComponent<InventoryCell>().posx) ||
+        //    !(cell1.GetComponent<InventoryCell>().posx <= cell.GetComponent<InventoryCell>().posx + x)) continue;
+
+        //else if (cell1.GetComponent<InventoryCell>().posx >= cell.GetComponent<InventoryCell>().posx &&
+        //    cell1.GetComponent<InventoryCell>().posx <= cell.GetComponent<InventoryCell>().posx + x &&
+        //    cell1.GetComponent<InventoryCell>().posy >= cell.GetComponent<InventoryCell>().posy &&
+        //    cell1.GetComponent<InventoryCell>().posy <= cell.GetComponent<InventoryCell>().posx + y &&
+        //    cell1.GetComponent<InventoryCell>().getStatus() == true)
+        //{
+        //    Debug.Log("no");
+        //    return false;
+        //}
+    }
+
+    public void ClearSpaceWhenDragging(GameObject a)
+    {
+        item_location location = GameObject.Find("Items").GetComponent<ItemController>().FindByGameObject(a);
+
+        foreach(Transform cell in GameObject.Find("Inventory_Cells").transform)
+        {
+            if (cell.GetComponent<InventoryCell>() == null) continue;
+            else if (isBetween(cell.GetComponent<InventoryCell>().posx, location.GetFirstCell().GetX(), location.GetLastCell().GetX(), true) &&
+                isBetween(cell.GetComponent<InventoryCell>().posy, location.GetFirstCell().GetY(), location.GetLastCell().GetY(), true)) cell.GetComponent<InventoryCell>().changeStatus(false);
+        }
+    }
+
+    // дописати
+    public void OccupySpaceWhenDropped(GameObject a, GameObject chosen)
+    {
+        inventoryItem item = GameObject.Find("Items").GetComponent<ItemDescriptor>().StructByName(a.name);
+
+        int x = a.GetComponent<RectTransform>().pivot == Vector2.zero ? item.y : item.x;
+        int y = a.GetComponent<RectTransform>().pivot == Vector2.zero ? item.x : item.y;
+
+        InventoryCell chosenCell = chosen.GetComponent<InventoryCell>();
+
+        foreach (Transform cell in GameObject.Find("Inventory_Cells").transform) if (cell.GetComponent<InventoryCell>() != null)
+            {
+                InventoryCell incell = cell.GetComponent<InventoryCell>();
+
+                if (incell == null) continue;
+                if(isBetween(incell.posx, chosenCell.posx, chosenCell.posx + x, true) && isBetween(incell.posy, chosenCell.posy, chosenCell.posy + y, true)) incell.changeStatus(true);
+            }
+    }
+
+    public bool isBetween (int variable, int lower, int bigger, bool including)
+    {
+        return including ? ((variable >= lower) && (variable <= bigger)) : ((variable > lower) && (variable < bigger));
+    }
+    
 }
