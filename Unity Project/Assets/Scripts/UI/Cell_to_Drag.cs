@@ -7,35 +7,19 @@ using UnityEngine.UI;
 
 
 // цей скрипт посилає дані про комірки до контролера
-public class Cell_to_Drag : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Cell_to_Drag : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
     Drag_Controller d_controller;
     GameObject cell_highlight;
     IEnumerator colorchanger;
     bool selected;
+    Vector2 RememberedPivot;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("entered cell");
-        d_controller.cell_selected = this.gameObject;
-
-        
-
-        cell_highlight = GameObject.Instantiate(this.gameObject, GameObject.Find("Inventory_Cells").transform);
-        Destroy(cell_highlight.GetComponent<GraphicRaycaster>());
-        Destroy(cell_highlight.GetComponent<Cell_to_Drag>());
-        Destroy(cell_highlight.GetComponent<InventoryCell>());
-        cell_highlight.GetComponent<Image>().sprite = null;
-
-        bool available = d_controller.GetState();
-        if (available) Debug.Log("cells available");
-        else Debug.Log("cells unavailable");
-
-        cell_highlight.GetComponent<Image>().color = available ? new Color(0.7f, 1, 0) : new Color(0.54510f, 0, 0);
-
-
-        colorchanger = alphaChange(cell_highlight);
-        StartCoroutine(colorchanger);
+        RememberedPivot = d_controller.object_dragged.GetComponent<RectTransform>().pivot;
+        //Debug.Log("entered cell");
+        HighlighCell();
     }
 
     private void Start()
@@ -97,5 +81,45 @@ public class Cell_to_Drag : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             returner = !returner;
         }
         
-    } 
+    }
+
+    public void Update()
+    {
+        if (this.GetComponent<GraphicRaycaster>().enabled && Input.GetKeyDown(KeyCode.R) && d_controller.cell_selected == this.gameObject) { }
+    }
+
+    public void HighlighCell()
+    {
+        if(colorchanger != null) StopCoroutine(colorchanger);
+        d_controller.cell_selected = this.gameObject;
+
+
+
+        cell_highlight = GameObject.Instantiate(this.gameObject, GameObject.Find("Inventory_Cells").transform);
+        Destroy(cell_highlight.GetComponent<GraphicRaycaster>());
+        Destroy(cell_highlight.GetComponent<Cell_to_Drag>());
+        Destroy(cell_highlight.GetComponent<InventoryCell>());
+        cell_highlight.GetComponent<Image>().sprite = null;
+
+        bool available = d_controller.GetState();
+        if (available) Debug.Log("cells available");
+        else Debug.Log("cells unavailable");
+
+        
+        cell_highlight.GetComponent<Image>().color = available ? new Color(0.7f, 1, 0) : new Color(0.54510f, 0, 0);
+
+
+        colorchanger = alphaChange(cell_highlight);
+        StartCoroutine(colorchanger);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        StopAllCoroutines();
+    }
+
+    public GameObject GetGhost()
+    {
+        return cell_highlight;
+    }
 }

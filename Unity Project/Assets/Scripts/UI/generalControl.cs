@@ -11,6 +11,7 @@ public class generalControl : MonoBehaviour
     Transform cells;
     Transform static_ui;
     Transform items;
+    Transform context;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,7 @@ public class generalControl : MonoBehaviour
         cells = GameObject.Find("Inventory_Cells").transform;
         static_ui = GameObject.Find("Static_UI").transform;
         items = GameObject.Find("Items").transform;
+        context = GameObject.Find("ContextMenu").transform.GetChild(0);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -34,6 +36,7 @@ public class generalControl : MonoBehaviour
             foreach(Transform cell in cells) if(cell.GetComponent<Image>() != null) cell.GetComponent<Image>().enabled = MenuOpen;
             foreach(Transform item in static_ui) if(item.name != "Crosshair") item.GetComponent<Image>().enabled = MenuOpen;
             foreach(Transform sprite in items) if (sprite.GetComponent<Image>() != null) sprite.GetComponent<Image>().enabled = MenuOpen;
+            if (!MenuOpen) foreach (Transform button in context) button.GetComponent<Image>().enabled = false;
             Time.timeScale = MenuOpen ? 0 : 1;
             Cursor.visible = MenuOpen;
             

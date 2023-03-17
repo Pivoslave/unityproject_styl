@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 // інтегрувати як вивід ф-ції FindFirst для випадків, коли предмет повернуто на 90 градусів
 public struct rect_rot
@@ -173,6 +175,8 @@ public class LogicArrayInv : MonoBehaviour
                     }
             }
         }
+
+        //DrawCellByArray();
     }
 
     public void RefillArray()
@@ -246,12 +250,16 @@ public class LogicArrayInv : MonoBehaviour
     {
         item_location location = GameObject.Find("Items").GetComponent<ItemController>().FindByGameObject(a);
 
+        //MakeAllCellsVisible();
+
         foreach(Transform cell in GameObject.Find("Inventory_Cells").transform)
         {
             if (cell.GetComponent<InventoryCell>() == null) continue;
             else if (isBetween(cell.GetComponent<InventoryCell>().posx, location.GetFirstCell().GetX(), location.GetLastCell().GetX(), true) &&
                 isBetween(cell.GetComponent<InventoryCell>().posy, location.GetFirstCell().GetY(), location.GetLastCell().GetY(), true)) cell.GetComponent<InventoryCell>().changeStatus(false);
         }
+
+        
     }
 
     // дописати
@@ -271,6 +279,8 @@ public class LogicArrayInv : MonoBehaviour
                 if (incell == null) continue;
                 if(isBetween(incell.posx, chosenCell.posx, chosenCell.posx + x, true) && isBetween(incell.posy, chosenCell.posy, chosenCell.posy + y, true)) incell.changeStatus(true);
             }
+
+        //DrawCellByArray();
     }
 
     public bool isBetween (int variable, int lower, int bigger, bool including)
@@ -278,4 +288,24 @@ public class LogicArrayInv : MonoBehaviour
         return including ? ((variable >= lower) && (variable <= bigger)) : ((variable > lower) && (variable < bigger));
     }
     
+    public void DrawCellByArray()
+    {
+        foreach (Transform cell in GameObject.Find("Inventory_Cells").transform)
+        {
+            if (cell.name.Contains("image") && !cell.name.Contains("Clone"))
+            {
+                string[] divided = cell.name.Split('_');
+                int x = Convert.ToInt32(divided[1]);
+                int y = Convert.ToInt32(divided[2]);
+
+                if (occup[x, y] == true) cell.GetComponent<Image>().color = new Color(1, 1, 1, 0);
+                else cell.GetComponent<Image>().sprite = Resources.Load<Sprite>("cell");
+            }
+        }
+    }
+
+    public void MakeAllCellsVisible()
+    {
+        foreach (Transform cell in this.transform) if (cell.name.Contains("image")) cell.GetComponent<Image>().color = Color.white;
+    }
 }

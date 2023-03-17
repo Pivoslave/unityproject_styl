@@ -58,8 +58,9 @@ public class ItemController : MonoBehaviour
     public void Add(item_location a)
     {
         items.Add(a);
+        
 
-        Debug.Log(a.item.name + " at (" + a.GetFirstCell().GetX() + ";" + a.GetFirstCell().GetY() + "), (" + a.GetLastCell().GetX() + ";" + a.GetLastCell().GetY() + ")");
+        //Debug.Log(a.item.name + " at (" + a.GetFirstCell().GetX() + ";" + a.GetFirstCell().GetY() + "), (" + a.GetLastCell().GetX() + ";" + a.GetLastCell().GetY() + ")");
     }
 
     // виключити елемент зі списку

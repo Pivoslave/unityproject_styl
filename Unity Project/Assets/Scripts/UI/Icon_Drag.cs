@@ -14,10 +14,12 @@ public class Icon_Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     Drag_Controller d_control;
     Vector2 first_anchor;
 
+    Vector2 rot_pivot;
     public GameObject firstcell;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        rot_pivot = this.GetComponent<RectTransform>().pivot;
         this.GetComponent<GraphicRaycaster>().enabled = false;
         foreach (Transform cell in GameObject.Find("Inventory_Cells").transform) if (cell.GetComponent<GraphicRaycaster>() != null) cell.GetComponent<GraphicRaycaster>().enabled = true;
 
@@ -31,6 +33,7 @@ public class Icon_Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         isDragging= true;
 
         first_anchor = this.GetComponent<RectTransform>().anchoredPosition;
+        
 
         d_control.drag_began = true;
         d_control.object_dragged = this.gameObject;
@@ -42,6 +45,8 @@ public class Icon_Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     public void OnDrag(PointerEventData eventData)
     {
         this.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -54,8 +59,16 @@ public class Icon_Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         }
         else
         {
+            if(this.GetComponent<RectTransform>().pivot != rot_pivot)
+            {
+                if (rot_pivot == Vector2.zero) this.transform.Rotate(Vector3.forward, -90);
+                else this.transform.Rotate(Vector3.forward, 90);
+
+                this.GetComponent<RectTransform>().pivot = rot_pivot;
+            }
+
             GameObject.Find("Inventory_Cells").GetComponent<LogicArrayInv>().OccupySpaceWhenDropped(this.gameObject, firstcell);
-            this.GetComponent<RectTransform>().anchoredPosition = first_anchor;
+            this.GetComponent<RectTransform>().position = firstcell.GetComponent<RectTransform>().position;
         }
 
         this.GetComponent<Image>().color = new Color(1, 1, 1, 1);
@@ -68,6 +81,17 @@ public class Icon_Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     private void Update()
     {
         //if (isDragging) this.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+
+        if (Input.GetKeyDown(KeyCode.R) && isDragging) 
+        {
+            if (this.GetComponent<RectTransform>().pivot == Vector2.zero) { this.transform.Rotate(Vector3.forward, 90); this.GetComponent<RectTransform>().pivot = new Vector2(0, 1); }
+            else { this.transform.Rotate(Vector3.forward, -90); this.GetComponent<RectTransform>().pivot = Vector2.zero; }
+
+            GameObject.Destroy(d_control.cell_selected.GetComponent<Cell_to_Drag>().GetGhost());
+            d_control.cell_selected.GetComponent<Cell_to_Drag>().HighlighCell();
+
+            this.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+        }
     }
 
     private void Start()
@@ -80,4 +104,6 @@ public class Icon_Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         GameObject items = GameObject.Find("Items");
         d_control = items.GetComponent<Drag_Controller>();
     }
+
+    
 }

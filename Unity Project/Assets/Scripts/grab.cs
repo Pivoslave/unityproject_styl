@@ -204,6 +204,7 @@ public class grab : MonoBehaviour
         @object.transform.parent = items.transform;
 
         @object.AddComponent<Icon_Drag>();
+        @object.AddComponent<CallContext>();
 
         items.GetComponent<ItemController>().Add(new item_location(@object, x_base, y_base, x_base + x_offset, y_base + y_offset));
 

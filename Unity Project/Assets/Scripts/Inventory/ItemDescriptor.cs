@@ -19,6 +19,16 @@ public struct inventoryItem
     }
 }
 
+public enum itemType
+{
+    Food,
+    Weapon,
+    Offhand,
+    Quickuse,
+
+    err
+}
+
 public class ItemDescriptor : MonoBehaviour
 {
 
@@ -52,6 +62,50 @@ public class ItemDescriptor : MonoBehaviour
             case string name when name.Contains("whisky"): return new inventoryItem("whisky", "Sprites/whisky", 0, 1);
 
             default: return new inventoryItem("", "", -1, -1);
+        }
+    }
+
+    public itemType getTypeByName(string item_name)
+    {
+        switch (item_name)
+        {
+            case string name when (name.Contains("bread") || name.Contains("big_cheese") || name.Contains("cheese")): return itemType.Food;
+            case string name when (name.Contains("ash_poker") || name.Contains("pipe_wrench")): return itemType.Weapon;
+            case string name when (name.Contains("opium") || name.Contains("whisky")): return itemType.Quickuse;
+
+            default: return itemType.err;
+        }
+    }
+
+    public GameObject getDroppable(GameObject a)
+    {
+        switch (a.name)
+        {
+            case string name when name.Contains("bread"): return Resources.Load<GameObject>("Prefabs/Bread");
+            case string name when name.Contains("big_cheese"): return Resources.Load<GameObject>("Prefabs/BigCheese");
+            case string name when name.Contains("cheese"): return Resources.Load<GameObject>("Prefabs/Cheese");
+            case string name when name.Contains("ash_poker"): return Resources.Load<GameObject>("Prefabs/AshPoker");
+            case string name when name.Contains("pipe_wrench"): return Resources.Load<GameObject>("Prefabs/PipeWrench");
+            case string name when name.Contains("opium"): return Resources.Load<GameObject>("Prefabs/Opium");
+            case string name when name.Contains("whisky"): return Resources.Load<GameObject>("Prefabs/Whisky");
+
+            default: return null;
+        }
+    }
+
+    public string getNameByInvItem(GameObject a)
+    {
+        switch (a.name)
+        {
+            case string name when name.Contains("bread"): return "Bread";
+            case string name when name.Contains("big_cheese"): return "BigCheese";
+            case string name when name.Contains("cheese"): return "Cheese";
+            case string name when name.Contains("ash_poker"): return "AshPoker";
+            case string name when name.Contains("pipe_wrench"): return "PipeWrench";
+            case string name when name.Contains("opium"): return "Opium";
+            case string name when name.Contains("whisky"): return "Whisky";
+
+            default: return null;
         }
     }
 }

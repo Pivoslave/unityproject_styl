@@ -58,6 +58,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\UI\Drag_Controller.cs" />
     <Compile Include="Assets\Scripts\UI\generalControl.cs" />
+    <Compile Include="Assets\Scripts\UI\ContextButtons\Drop.cs" />
+    <Compile Include="Assets\Scripts\UI\ContextMenuController.cs" />
+    <Compile Include="Assets\Scripts\UI\CallContext.cs" />
     <Compile Include="Assets\Scripts\Visual\Highlight_Collectable.cs" />
     <Compile Include="Assets\Scripts\UI\Icon_Drag.cs" />
     <Compile Include="Assets\Scripts\UI\InventoryCell.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="Assets\Scripts\UI\InventoryController.cs" />
     <Compile Include="Assets\Scripts\Inventory\LogicArrayInv.cs" />
     <Compile Include="Assets\Scripts\test.cs" />
+    <Compile Include="Assets\Scripts\UI\ContextInvisOnExitMouse.cs" />
     <Compile Include="Assets\Scripts\UI\ItemController.cs" />
     <Compile Include="Assets\Scripts\Inventory\ItemDescriptor.cs" />
     <Compile Include="Assets\Scripts\UI\Cell_to_Drag.cs" />
